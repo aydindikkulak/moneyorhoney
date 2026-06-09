@@ -1,0 +1,44 @@
+{
+	"easy": {
+		"color_deviation": 0.3,
+		"size_deviation": 0.05,
+		"weight_deviation": 0.08,
+		"missing_features": ["uv_features", "micro_printing"],
+		"detection_chance": 0.9
+	},
+	"medium": {
+		"color_deviation": 0.15,
+		"size_deviation": 0.02,
+		"weight_deviation": 0.04,
+		"missing_features": ["micro_printing"],
+		"detection_chance": 0.7
+	},
+	"medium_hard": {
+		"color_deviation": 0.1,
+		"size_deviation": 0.015,
+		"weight_deviation": 0.03,
+		"missing_features": [],
+		"detection_chance": 0.6
+	},
+	"hard": {
+		"color_deviation": 0.08,
+		"size_deviation": 0.01,
+		"weight_deviation": 0.02,
+		"missing_features": [],
+		"detection_chance": 0.5
+	},
+	"hard_professional": {
+		"color_deviation": 0.05,
+		"size_deviation": 0.008,
+		"weight_deviation": 0.015,
+		"missing_features": [],
+		"detection_chance": 0.4
+	},
+	"professional": {
+		"color_deviation": 0.03,
+		"size_deviation": 0.005,
+		"weight_deviation": 0.01,
+		"missing_features": [],
+		"detection_chance": 0.3
+	}
+}

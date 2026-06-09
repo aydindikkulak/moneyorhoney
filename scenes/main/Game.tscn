@@ -1,0 +1,529 @@
+[gd_scene load_steps=4 format=3 uid="uid://gamescene"]
+
+[ext_resource type="Script" path="res://scripts/gameplay/GameScene.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/ui/HUD.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/ui/DayEndReport.gd" id="3"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.15, 0.18, 0.2, 1)
+
+[node name="BankBackground" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.25, 0.28, 1)
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2")
+
+[node name="TopBar" type="HBoxContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_constants/separation = 20
+
+[node name="ScoreLabel" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "Skor: 0"
+
+[node name="MoneyLabel" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "Kasa: $0"
+
+[node name="LevelLabel" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "Seviye: 1"
+
+[node name="DayLabel" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "Gun: 1"
+
+[node name="TimerLabel" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "Sure: 01:00"
+
+[node name="StreakLabel" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "Seri: 0"
+
+[node name="AccuracyLabel" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "Dogruluk: 0%"
+
+[node name="MultiplierLabel" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.5, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "x1.0"
+visible = false
+
+[node name="DecisionFeedback" type="Label" parent="HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -200.0
+offset_right = 100.0
+offset_bottom = -170.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+text = ""
+horizontal_alignment = 1
+visible = false
+
+[node name="CustomerArea" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 50.0
+offset_right = 300.0
+offset_bottom = 450.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CustomerArea"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CustomerNameLabel" type="Label" parent="CustomerArea/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 20
+text = "Musteri: -"
+
+[node name="CustomerSprite" type="ColorRect" parent="CustomerArea/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(64, 64)
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="MoodLabel" type="Label" parent="CustomerArea/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+text = "Ruh Hali: -"
+
+[node name="PurposeLabel" type="Label" parent="CustomerArea/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Islem Amaci: -"
+autowrap_mode = 2
+
+[node name="SourceLabel" type="Label" parent="CustomerArea/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Kaynak: -"
+autowrap_mode = 2
+
+[node name="AmountLabel" type="Label" parent="CustomerArea/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "Miktar: -"
+
+[node name="DialogContainer" type="VBoxContainer" parent="CustomerArea/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="AskSourceButton" type="Button" parent="CustomerArea/VBoxContainer/DialogContainer"]
+layout_mode = 2
+text = "Kaynagini sor"
+
+[node name="AskPurposeButton" type="Button" parent="CustomerArea/VBoxContainer/DialogContainer"]
+layout_mode = 2
+text = "Islem amacini sor"
+
+[node name="AskFrequencyButton" type="Button" parent="CustomerArea/VBoxContainer/DialogContainer"]
+layout_mode = 2
+text = "Ne siklikla gelirsin?"
+
+[node name="ResponseLabel" type="Label" parent="CustomerArea/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = ""
+autowrap_mode = 2
+
+[node name="DocumentPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 460.0
+offset_right = 300.0
+offset_bottom = 680.0
+visible = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DocumentPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="DocTitleLabel" type="Label" parent="DocumentPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "Belgeler"
+
+[node name="DocContentLabel" type="Label" parent="DocumentPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = ""
+autowrap_mode = 2
+
+[node name="InspectionArea" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 320.0
+offset_top = 50.0
+offset_right = 780.0
+offset_bottom = 550.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InspectionArea"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BanknoteTitle" type="Label" parent="InspectionArea/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "Para Incelemesi"
+horizontal_alignment = 1
+
+[node name="BanknoteDisplay" type="ColorRect" parent="InspectionArea/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(256, 128)
+size_flags_horizontal = 4
+color = Color(0.3, 0.4, 0.3, 1)
+
+[node name="BanknoteSprite" type="TextureRect" parent="InspectionArea/VBoxContainer/BanknoteDisplay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="UVOverlay" type="ColorRect" parent="InspectionArea/VBoxContainer/BanknoteDisplay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0, 0.3, 0.7)
+visible = false
+
+[node name="SerialLabel" type="Label" parent="InspectionArea/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Seri No: -"
+horizontal_alignment = 1
+
+[node name="FindingsContainer" type="VBoxContainer" parent="InspectionArea/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="FindingsTitle" type="Label" parent="InspectionArea/VBoxContainer/FindingsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "Bulgular:"
+
+[node name="FindingsList" type="Label" parent="InspectionArea/VBoxContainer/FindingsContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = ""
+autowrap_mode = 2
+
+[node name="SuspicionBar" type="ProgressBar" parent="InspectionArea/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 20)
+max_value = 100.0
+value = 0.0
+show_percentage = true
+
+[node name="SuspicionLabel" type="Label" parent="InspectionArea/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.5, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "Suphe: 0%"
+horizontal_alignment = 1
+
+[node name="ToolPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 320.0
+offset_top = 560.0
+offset_right = 780.0
+offset_bottom = 680.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ToolPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="MagnifierButton" type="Button" parent="ToolPanel/HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 50)
+text = "Buyutec [1]"
+visible = false
+
+[node name="UVLampButton" type="Button" parent="ToolPanel/HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 50)
+text = "UV Lamba [2]"
+visible = false
+
+[node name="ScaleButton" type="Button" parent="ToolPanel/HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 50)
+text = "Terazi [3]"
+visible = false
+
+[node name="MicroscopeButton" type="Button" parent="ToolPanel/HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 50)
+text = "Mikroskop [4]"
+visible = false
+
+[node name="DecisionPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_top = 50.0
+offset_right = -20.0
+offset_bottom = 680.0
+grow_horizontal = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DecisionPanel"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="DecisionTitle" type="Label" parent="DecisionPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "Karar Ver"
+horizontal_alignment = 1
+
+[node name="VisualCheckButton" type="Button" parent="DecisionPanel/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 40)
+text = "Gorsel Kontrol"
+
+[node name="AcceptButton" type="Button" parent="DecisionPanel/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 60)
+theme_override_colors/font_color = Color(0.2, 0.9, 0.2, 1)
+theme_override_font_sizes/font_size = 20
+text = "KABUL ET"
+
+[node name="RejectButton" type="Button" parent="DecisionPanel/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 60)
+theme_override_colors/font_color = Color(0.9, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 20
+text = "RED ET"
+
+[node name="Spacer" type="Control" parent="DecisionPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CustomerCountLabel" type="Label" parent="DecisionPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+text = "Musteri: 0/0"
+horizontal_alignment = 1
+
+[node name="DayEndReport" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+script = ExtResource("3")
+
+[node name="Panel" type="PanelContainer" parent="DayEndReport"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -220.0
+offset_right = 250.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="DayEndReport/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="DayEndReport/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 24
+text = "Gun Raporu"
+horizontal_alignment = 1
+
+[node name="StatsContainer" type="VBoxContainer" parent="DayEndReport/Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="ScoreLabel" type="Label" parent="DayEndReport/Panel/VBox/StatsContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Skor: 0"
+
+[node name="AccuracyLabel" type="Label" parent="DayEndReport/Panel/VBox/StatsContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Dogruluk: 0%"
+
+[node name="CorrectLabel" type="Label" parent="DayEndReport/Panel/VBox/StatsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "Dogru: 0"
+
+[node name="WrongLabel" type="Label" parent="DayEndReport/Panel/VBox/StatsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "Yanlis: 0"
+
+[node name="MoneyLabel" type="Label" parent="DayEndReport/Panel/VBox/StatsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "Kasa: $0"
+
+[node name="StreakLabel" type="Label" parent="DayEndReport/Panel/VBox/StatsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "En iyi seri: 0"
+
+[node name="ResultLabel" type="Label" parent="DayEndReport/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = ""
+horizontal_alignment = 1
+
+[node name="ButtonContainer" type="HBoxContainer" parent="DayEndReport/Panel/VBox"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="NextButton" type="Button" parent="DayEndReport/Panel/VBox/ButtonContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(150, 40)
+text = "Sonraki Gun"
+
+[node name="RetryButton" type="Button" parent="DayEndReport/Panel/VBox/ButtonContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(150, 40)
+text = "Tekrar Dene"
+visible = false
+
+[node name="LevelIntroPanel" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+
+[node name="Panel" type="PanelContainer" parent="LevelIntroPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -150.0
+offset_right = 250.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="LevelIntroPanel/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="LevelNameLabel" type="Label" parent="LevelIntroPanel/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 24
+text = "Seviye 1: Is Baslangici"
+horizontal_alignment = 1
+
+[node name="DescriptionLabel" type="Label" parent="LevelIntroPanel/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Aciklama"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="InfoLabel" type="Label" parent="LevelIntroPanel/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Bilgi"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="StartDayButton" type="Button" parent="LevelIntroPanel/Panel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 50)
+theme_override_font_sizes/font_size = 20
+text = "Gune Basla"

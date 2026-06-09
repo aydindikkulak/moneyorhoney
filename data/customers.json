@@ -1,0 +1,65 @@
+{
+	"customer_names": [
+		"John Smith", "Mary Johnson", "Robert Williams", "Patricia Brown",
+		"James Jones", "Linda Davis", "Michael Miller", "Elizabeth Wilson",
+		"William Moore", "Jennifer Taylor", "David Anderson", "Susan Thomas",
+		"Richard Jackson", "Margaret White", "Joseph Harris", "Dorothy Martin",
+		"Thomas Garcia", "Lisa Rodriguez", "Charles Martinez", "Nancy Lopez"
+	],
+	"customer_types": {
+		"normal": {
+			"weight": 0.6,
+			"mood": "normal",
+			"consistency_range": [0.8, 1.0]
+		},
+		"careless": {
+			"weight": 0.2,
+			"mood": "distracted",
+			"consistency_range": [0.6, 0.8]
+		},
+		"suspicious": {
+			"weight": 0.15,
+			"mood": "nervous",
+			"consistency_range": [0.2, 0.5]
+		},
+		"professional": {
+			"weight": 0.05,
+			"mood": "confident",
+			"consistency_range": [0.8, 0.95]
+		}
+	},
+	"transaction_purposes": [
+		"Maas odemesi",
+		"Fatura odemesi",
+		"Havale islemi",
+		"Doviz bozdurma",
+		"Kredi geri odemesi",
+		"Ticaret odemesi",
+		"Kira odemesi",
+		"Sigorta odemesi",
+		"Vergi odemesi",
+		"Egitim odemesi"
+	],
+	"suspicious_purposes": [
+		"Aile yardimi",
+		"Borc kapanma",
+		"Yatirim getirisi",
+		"Online satis geliri",
+		"Kripto satisi",
+		"Danismanlik ucreti"
+	],
+	"normal_sources": [
+		"Maas",
+		"Sirket kazanci",
+		"Biriktigim para",
+		"Miras",
+		"Satis geliri"
+	],
+	"suspicious_sources": [
+		"Ozel isler",
+		"Bazi yatirimlar",
+		"Arkadasimdan",
+		"Detayini veremem",
+		"Kisisel"
+	]
+}

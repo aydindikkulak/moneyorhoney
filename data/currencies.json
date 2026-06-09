@@ -1,0 +1,53 @@
+{
+	"USD": {
+		"name": "US Dollar",
+		"symbol": "$",
+		"denominations": [1, 5, 10, 20, 50, 100],
+		"security_features": {
+			"3d_ribbon": true,
+			"color_shifting_ink": true,
+			"watermark": true,
+			"uv_features": true,
+			"micro_printing": true
+		},
+		"colors": {
+			"primary": "#4a5d23",
+			"secondary": "#8b9556",
+			"accent": "#2d3a0f"
+		}
+	},
+	"EUR": {
+		"name": "Euro",
+		"symbol": "€",
+		"denominations": [5, 10, 20, 50, 100, 200, 500],
+		"security_features": {
+			"hologram_strip": true,
+			"watermark": true,
+			"security_thread": true,
+			"uv_features": true,
+			"micro_printing": true
+		},
+		"colors": {
+			"primary": "#3d5a80",
+			"secondary": "#98c1d9",
+			"accent": "#293241"
+		}
+	},
+	"GBP": {
+		"name": "British Pound",
+		"symbol": "£",
+		"denominations": [5, 10, 20, 50],
+		"security_features": {
+			"hologram": true,
+			"metallic_patch": true,
+			"raised_print": true,
+			"uv_features": true,
+			"micro_printing": true
+		},
+		"colors": {
+			"primary": "#6b4226",
+			"secondary": "#a67c52",
+			"accent": "#3d2817"
+		}
+	}
+}
