@@ -15,6 +15,8 @@ enum ToolType {
 var available_tools: Array = []
 var active_tool: ToolType = ToolType.NONE
 var is_tool_active: bool = false
+var tool_usage_stats: Dictionary = {}
+var tool_findings_history: Array = []
 
 var tool_info: Dictionary = {
 	ToolType.MAGNIFIER: {
@@ -75,6 +77,12 @@ func activate_tool(tool: ToolType) -> bool:
 	
 	active_tool = tool
 	is_tool_active = true
+	
+	# Track usage statistics
+	if not tool_usage_stats.has(tool):
+		tool_usage_stats[tool] = 0
+	tool_usage_stats[tool] += 1
+	
 	tool_activated.emit(tool_info[tool]["name"])
 	return true
 
@@ -97,7 +105,70 @@ func inspect_with_tool(banknote: Banknote, tool: ToolType) -> Dictionary:
 	
 	var result = banknote.use_tool(tool)
 	inspection_result.emit(result)
+	
+	# Store finding in history
+	var finding_record = {
+		"tool": tool_info[tool]["name"],
+		"result": result,
+		"timestamp": Time.get_ticks_msec()
+	}
+	tool_findings_history.append(finding_record)
+	
 	return result
+
+func get_tool_usage_stats() -> Dictionary:
+	return tool_usage_stats
+
+func get_findings_history() -> Array:
+	return tool_findings_history
+
+func get_tool_effectiveness(tool: ToolType) -> float:
+	var count = tool_usage_stats.get(tool, 0)
+	if count == 0:
+		return 0.0
+	
+	var successful_findings = 0
+	for finding in tool_findings_history:
+		if finding["tool"] == tool_info[tool]["name"]:
+			var result = finding["result"]
+			for key in result:
+				if result[key] == true or (result[key] is String and "anomaly" in result[key].to_lower()):
+					successful_findings += 1
+					break
+	
+	return float(successful_findings) / float(count)
+
+func get_detailed_tool_guide(tool: ToolType) -> Dictionary:
+	match tool:
+		ToolType.MAGNIFIER:
+			return {
+				"name": "Buyutec",
+				"usage": "Banknot uzerindeki kucuk detaylari inceler",
+				"detects": ["Seri numarasi formati", "Mikro yazilar", "Boyut sapmasi"],
+				"tip": "Sahte paralarda seri numarasi formati genellikle hatalidir"
+			}
+		ToolType.UV_LAMP:
+			return {
+				"name": "UV Lamba",
+				"usage": "Ultraviyole isik altinda guvenlik izlerini kontrol eder",
+				"detects": ["UV guvenlik izleri", "Ozel murekkep izleri", "Guvenlik iplikleri"],
+				"tip": "Cok sahte paralarda UV ozellikler eksik veya zayiftir"
+			}
+		ToolType.SCALE:
+			return {
+				"name": "Terazi",
+				"usage": "Banknotun agirligini olcer",
+				"detects": ["Agirlik sapmasi", "Yanlis kagit tipi"],
+				"tip": "Sahte paralar genellikle gerceklerden hafif veya agirdir"
+			}
+		ToolType.MICROSCOPE:
+			return {
+				"name": "Mikroskop",
+				"usage": "Cok yuksek buyutme ile detayli inceleme yapar",
+				"detects": ["Mikro yazilar", "Baski kalitesi", "Lif yapisı"],
+				"tip": "Profesyonel sahteciler bile mikro yazilari taklit edemez"
+			}
+	return {}
 
 func get_available_tool_count() -> int:
 	return available_tools.size()
