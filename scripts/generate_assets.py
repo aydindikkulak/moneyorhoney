@@ -7,21 +7,26 @@ Generates consistent pixel art assets for the game
 from PIL import Image, ImageDraw, ImageFont
 import os
 import random
+import sys
 
-# Asset directories
-ASSETS_DIR = "../assets/sprites"
+# Asset directories - use script location as reference
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.dirname(SCRIPT_DIR)
+ASSETS_DIR = os.path.join(PROJECT_DIR, "assets/sprites")
 CURRENCIES_DIR = f"{ASSETS_DIR}/currencies"
 NPCS_DIR = f"{ASSETS_DIR}/npcs"
 UI_DIR = f"{ASSETS_DIR}/ui"
 TOOLS_DIR = f"{ASSETS_DIR}/tools"
 DOCUMENTS_DIR = f"{ASSETS_DIR}/documents"
+BACKGROUNDS_DIR = f"{ASSETS_DIR}/backgrounds"
 
 # Create directories
-for dir_path in [CURRENCIES_DIR, NPCS_DIR, UI_DIR, TOOLS_DIR, DOCUMENTS_DIR]:
+for dir_path in [CURRENCIES_DIR, NPCS_DIR, UI_DIR, TOOLS_DIR, DOCUMENTS_DIR, BACKGROUNDS_DIR]:
     os.makedirs(dir_path, exist_ok=True)
-    os.makedirs(f"{dir_path}/usd", exist_ok=True)
-    os.makedirs(f"{dir_path}/eur", exist_ok=True)
-    os.makedirs(f"{dir_path}/gbp", exist_ok=True)
+
+# Create currency subdirectories
+for currency in ["usd", "eur", "gbp"]:
+    os.makedirs(f"{CURRENCIES_DIR}/{currency}", exist_ok=True)
 
 # Color palettes
 COLORS = {
@@ -294,6 +299,44 @@ def generate_ui_element(element_name, size=(32, 32)):
     
     return img
 
+def generate_background(name, size=(1280, 720)):
+    """Generate background images"""
+    img = Image.new('RGB', size, (40, 50, 60))
+    draw = ImageDraw.Draw(img)
+    
+    if name == "bank_interior":
+        # Bank interior - walls and floor
+        draw.rectangle([0, 0, size[0]-1, size[1]//2], fill=(70, 80, 90))
+        draw.rectangle([0, size[1]//2, size[0]-1, size[1]-1], fill=(50, 60, 70))
+        # Counter
+        draw.rectangle([0, size[1]//2 - 20, size[0]-1, size[1]//2 + 40], fill=(100, 80, 60))
+        draw.rectangle([0, size[1]//2 + 40, size[0]-1, size[1]//2 + 45], fill=(80, 60, 40))
+        # Window
+        draw.rectangle([size[0]//2 - 100, 40, size[0]//2 + 100, 200], fill=(120, 150, 180))
+        draw.rectangle([size[0]//2 - 100, 40, size[0]//2 + 100, 200], outline=(60, 70, 80), width=3)
+        draw.line([size[0]//2, 40, size[0]//2, 200], fill=(60, 70, 80), width=2)
+        draw.line([size[0]//2 - 100, 120, size[0]//2 + 100, 120], fill=(60, 70, 80), width=2)
+    elif name == "bank_counter":
+        # Teller counter close-up
+        draw.rectangle([0, 0, size[0]-1, size[1]-1], fill=(60, 70, 80))
+        draw.rectangle([0, size[1]//3, size[0]-1, size[1]-1], fill=(100, 80, 60))
+        draw.rectangle([0, size[1]//3, size[0]-1, size[1]//3 + 5], fill=(120, 100, 80))
+        # Glass partition hint
+        draw.rectangle([size[0]//4, 20, 3*size[0]//4, size[1]//3], fill=(80, 100, 120))
+        draw.rectangle([size[0]//4, 20, 3*size[0]//4, size[1]//3], outline=(60, 70, 80), width=2)
+    elif name == "bank_exterior":
+        # Outside view through window
+        draw.rectangle([0, 0, size[0]-1, size[1]-1], fill=(50, 60, 70))
+        # Sky
+        draw.rectangle([100, 50, size[0]-100, size[1]//2], fill=(100, 140, 180))
+        # Buildings
+        draw.rectangle([150, 150, 300, size[1]//2], fill=(80, 80, 90))
+        draw.rectangle([350, 120, 500, size[1]//2], fill=(90, 85, 80))
+        # Ground
+        draw.rectangle([100, size[1]//2, size[0]-100, size[1]-50], fill=(70, 75, 65))
+    
+    return img
+
 def main():
     print("Generating Money or Honey assets...")
     
@@ -347,6 +390,13 @@ def main():
         img.save(f"{UI_DIR}/{element}.png")
         print(f"Generated {element} UI element")
     
+    # Generate backgrounds
+    backgrounds = ["bank_interior", "bank_counter", "bank_exterior"]
+    for bg_name in backgrounds:
+        img = generate_background(bg_name)
+        img.save(f"{BACKGROUNDS_DIR}/{bg_name}.png")
+        print(f"Generated {bg_name} background")
+    
     print("\nAsset generation complete!")
     print(f"Total assets generated:")
     print(f"- Banknotes: {sum(len(d) for d in denominations.values()) * 2} (real + fake)")
@@ -354,6 +404,7 @@ def main():
     print(f"- Tools: {len(tools)}")
     print(f"- Documents: {len(doc_types) * 3}")
     print(f"- UI elements: {len(ui_elements)}")
+    print(f"- Backgrounds: {len(backgrounds)}")
 
 if __name__ == "__main__":
     main()

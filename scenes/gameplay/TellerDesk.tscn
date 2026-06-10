@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[node name="TellerDesk" type="Node2D"]
+
+[node name="DeskSprite" type="Sprite2D" parent="."]
+position = Vector2(640, 360)
+
+[node name="InspectionArea" type="Area2D" parent="."]
+position = Vector2(640, 300)
+
+[node name="CollisionShape" type="CollisionShape2D" parent="InspectionArea"]
+shape = SubResource("RectangleShape2D_1")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(400, 200)

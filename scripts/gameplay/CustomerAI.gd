@@ -1,4 +1,5 @@
 extends Node
+class_name CustomerAI
 
 signal customer_arrived(customer_data: Dictionary)
 signal customer_left(satisfied: bool)

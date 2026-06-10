@@ -1,18 +1,9 @@
 extends Node
 
-signal day_started
-signal day_ended
-signal decision_made(is_correct: bool)
-signal game_over
-
-enum GameState {
-	MENU,
-	PLAYING,
-	DAY_END,
-	GAME_OVER
-}
+enum GameState { MENU, PLAYING, DAY_END, GAME_OVER }
 
 var current_state: GameState = GameState.MENU
+
 var current_level: int = 1
 var current_day: int = 1
 var total_score: int = 0
@@ -24,6 +15,12 @@ var day_wrong_decisions: int = 0
 var day_money_earned: int = 0
 var day_money_lost: int = 0
 
+signal game_started
+signal day_started
+signal day_ended
+signal decision_made(is_correct: bool)
+signal game_over
+
 func _ready():
 	print("GameManager initialized")
 
@@ -33,6 +30,7 @@ func start_game():
 	total_score = 0
 	total_money_earned = 0
 	total_money_lost = 0
+	game_started.emit()
 	start_day()
 
 func start_day():

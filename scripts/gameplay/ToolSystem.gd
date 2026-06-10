@@ -1,4 +1,5 @@
 extends Node
+class_name ToolSystem
 
 signal tool_activated(tool_name: String)
 signal tool_deactivated

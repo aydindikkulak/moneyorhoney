@@ -1,4 +1,5 @@
 extends Node
+class_name CurrencyInspector
 
 signal inspection_complete(result: Dictionary)
 signal visual_check_complete(result: Dictionary)
@@ -6,7 +7,7 @@ signal tool_check_complete(tool: String, result: Dictionary)
 signal document_check_complete(result: Dictionary)
 signal laundering_check_complete(result: Dictionary)
 
-var current_banknote: Banknote
+var current_banknote_data: Dictionary = {}
 var current_customer_data: Dictionary = {}
 var active_tool: int = 0
 

@@ -123,32 +123,31 @@ func _on_time_expired():
 func show_decision_feedback(is_correct: bool, points: int = 0):
 	if decision_feedback:
 		if is_correct:
-			decision_feedback.text = "DOG RU! +%d" % points
+			decision_feedback.text = "DOĞRU! +%d" % points
 			decision_feedback.add_theme_color_override("font_color", Color.GREEN)
 		else:
-			decision_feedback.text = "YANLIS!"
+			decision_feedback.text = "YANLIŞ!"
 			decision_feedback.add_theme_color_override("font_color", Color.RED)
 		
 		decision_feedback.visible = true
-		await get_tree().create_timer(1.5).timeout
-		decision_feedback.visible = false
+		_create_timer_and_hide(decision_feedback, 1.5)
+
+func _create_timer_and_hide(node: Control, delay: float):
+	await get_tree().create_timer(delay).timeout
+	node.visible = false
 
 func _show_combo_popup(combo_count: int):
 	combo_popup.text = "COMBO x%d!" % combo_count
 	combo_popup.visible = true
 	combo_displayed.emit(combo_count)
-	
-	await get_tree().create_timer(1.0).timeout
-	combo_popup.visible = false
+	_create_timer_and_hide(combo_popup, 1.0)
 
 func _show_achievement_popup(name: String, description: String):
 	achievement_name_label.text = name
 	achievement_desc_label.text = description
 	achievement_popup.visible = true
 	achievement_displayed.emit(name)
-	
-	await get_tree().create_timer(3.0).timeout
-	achievement_popup.visible = false
+	_create_timer_and_hide(achievement_popup, 3.0)
 
 func show_tool_feedback(tool_name: String, findings: Dictionary):
 	var feedback_text = tool_name + ": "

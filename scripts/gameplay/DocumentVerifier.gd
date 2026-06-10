@@ -1,4 +1,5 @@
 extends Node
+class_name DocumentVerifier
 
 signal document_checked(document: Dictionary, is_valid: bool)
 signal mismatch_found(details: String)

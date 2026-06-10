@@ -97,6 +97,67 @@ theme_override_font_sizes/font_size = 16
 text = "x1.0"
 visible = false
 
+[node name="ComboLabel" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "COMBO x0"
+visible = false
+
+[node name="CustomersServedLabel" type="Label" parent="HUD/TopBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "Musteri: 0/0"
+
+[node name="ComboPopup" type="Label" parent="HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.2, 1)
+theme_override_font_sizes/font_size = 32
+text = "COMBO x2!"
+horizontal_alignment = 1
+visible = false
+
+[node name="AchievementPopup" type="PanelContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 50.0
+offset_right = 150.0
+offset_bottom = 120.0
+grow_horizontal = 2
+visible = false
+
+[node name="VBox" type="VBoxContainer" parent="HUD/AchievementPopup"]
+layout_mode = 2
+
+[node name="AchievementName" type="Label" parent="HUD/AchievementPopup/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "Basari!"
+horizontal_alignment = 1
+
+[node name="AchievementDesc" type="Label" parent="HUD/AchievementPopup/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Aciklama"
+horizontal_alignment = 1
+autowrap_mode = 2
+
 [node name="DecisionFeedback" type="Label" parent="HUD"]
 layout_mode = 1
 anchors_preset = 8
@@ -459,11 +520,37 @@ theme_override_colors/font_color = Color(1, 0.7, 0.2, 1)
 theme_override_font_sizes/font_size = 16
 text = "En iyi seri: 0"
 
+[node name="ComboLabel" type="Label" parent="DayEndReport/Panel/VBox/StatsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.5, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "En yuksek combo: x0"
+
+[node name="FakeDetectedLabel" type="Label" parent="DayEndReport/Panel/VBox/StatsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 16
+text = "Sahte para yakalanan: 0"
+
+[node name="LaunderingLabel" type="Label" parent="DayEndReport/Panel/VBox/StatsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.5, 0.2, 1)
+theme_override_font_sizes/font_size = 16
+text = "Kara para yakalanan: 0"
+
 [node name="ResultLabel" type="Label" parent="DayEndReport/Panel/VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = ""
 horizontal_alignment = 1
+
+[node name="BonusesLabel" type="Label" parent="DayEndReport/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 14
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="ButtonContainer" type="HBoxContainer" parent="DayEndReport/Panel/VBox"]
 layout_mode = 2

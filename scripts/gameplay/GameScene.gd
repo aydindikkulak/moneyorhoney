@@ -1,5 +1,10 @@
 extends Control
 
+const CustomerAI = preload("res://scripts/gameplay/CustomerAI.gd")
+const CurrencyInspector = preload("res://scripts/gameplay/CurrencyInspector.gd")
+const ToolSystem = preload("res://scripts/gameplay/ToolSystem.gd")
+const DocumentVerifier = preload("res://scripts/gameplay/DocumentVerifier.gd")
+
 @onready var customer_name_label: Label = $CustomerArea/VBoxContainer/CustomerNameLabel
 @onready var customer_sprite: TextureRect = $CustomerArea/VBoxContainer/CustomerSprite
 @onready var mood_label: Label = $CustomerArea/VBoxContainer/MoodLabel
@@ -41,10 +46,10 @@ extends Control
 @onready var info_label: Label = $LevelIntroPanel/Panel/VBox/InfoLabel
 @onready var start_day_btn: Button = $LevelIntroPanel/Panel/VBox/StartDayButton
 
-var customer_ai: CustomerAI
-var currency_inspector: CurrencyInspector
-var tool_system: ToolSystem
-var document_verifier: DocumentVerifier
+var customer_ai
+var currency_inspector
+var tool_system
+var document_verifier
 
 var current_customer_index: int = 0
 var total_customers: int = 0
@@ -88,8 +93,9 @@ func _connect_signals():
 	
 	day_end_report.day_complete.connect(_on_day_complete)
 	day_end_report.retry_requested.connect(_on_retry_day)
-	
-	customer_ai.customer_arrived.connect(_on_customer_arrived)
+
+func _on_customer_arrived(customer_data: Dictionary):
+	_display_customer(customer_data)
 
 func _setup_ui():
 	var level = GameManager.current_level
@@ -180,7 +186,7 @@ func _display_customer(customer: Dictionary):
 	response_label.text = ""
 	
 	# Load customer NPC sprite
-	var npc_type = customer.get("mood", "normal")
+	var npc_type = _get_npc_type_from_mood(customer.get("mood", "normal"))
 	var npc_variant = customer.get("sprite_index", 0) % 3
 	var npc_texture = CurrencyDatabase.load_npc_texture(npc_type, npc_variant)
 	if npc_texture:
@@ -331,6 +337,19 @@ func _display_findings(findings: Dictionary):
 	var suspicion = currency_inspector.get_suspicion_level()
 	suspicion_bar.value = suspicion * 100
 	suspicion_label.text = "Suphe: %d%%" % int(suspicion * 100)
+
+func _get_npc_type_from_mood(mood: String) -> String:
+	match mood:
+		"normal":
+			return "normal"
+		"distracted":
+			return "careless"
+		"nervous":
+			return "suspicious"
+		"confident":
+			return "professional"
+		_:
+			return "normal"
 
 func _on_accept():
 	if not is_processing_customer:
