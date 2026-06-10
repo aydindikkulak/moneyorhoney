@@ -135,7 +135,9 @@ func generate_customer(level: int, customer_type: int = -1) -> Dictionary:
 		"is_money_laundering": is_money_laundering,
 		"consistency_score": consistency_score,
 		"mood": _get_mood(customer_type),
-		"sprite_index": randi() % 10
+		"sprite_index": randi() % 10,
+		"behavioral_hints": _get_behavioral_hints(customer_type),
+		"observation_notes": _get_observation_notes(customer_type, is_money_laundering)
 	}
 	
 	questions_asked = 0
@@ -223,6 +225,45 @@ func _get_mood(type: int) -> String:
 		CustomerType.SUSPICIOUS: return "nervous"
 		CustomerType.PROFESSIONAL: return "confident"
 	return "normal"
+
+func _get_behavioral_hints(type: int) -> Array:
+	var hints = []
+	match type:
+		CustomerType.NORMAL:
+			hints.append("Rahat ve dogal davranislar")
+			hints.append("Net ve tutarli yanitlar")
+		CustomerType.CARELESS:
+			hints.append("Dikkati daginik gorunuyor")
+			hints.append("Bazen tutarsiz ifadeler")
+		CustomerType.SUSPICIOUS:
+			hints.append("Gergin ve tedirgin")
+			hints.append("Goz temasi kurmaktan kaciniyor")
+			hints.append("Sorulara hazirliksiz yanitlar")
+		CustomerType.PROFESSIONAL:
+			hints.append("Asiri rahat ve kendinden emin")
+			hints.append("Her seyi onceden planlamis gibi")
+			hints.append("Cok detayli ve tutarli hikaye")
+	return hints
+
+func _get_observation_notes(type: int, is_money_laundering: bool) -> Array:
+	var notes = []
+	match type:
+		CustomerType.NORMAL:
+			notes.append("Normal bir musteri gibi gorunuyor")
+		CustomerType.CARELESS:
+			notes.append("Belgelerini duzgun tutmamis")
+			notes.append("Islem detaylarini tam hatirlamiyor")
+		CustomerType.SUSPICIOUS:
+			notes.append("Supheli davranislar sergiliyor")
+			if is_money_laundering:
+				notes.append("Buyuk miktarda nakit getiriyor")
+				notes.append("Kaynak konusunda belirsiz")
+		CustomerType.PROFESSIONAL:
+			notes.append("Cok profesyonel gorunuyor")
+			notes.append("Her seyi onceden hazirlamis")
+			if is_money_laundering:
+				notes.append("Karmaşık bir islem hikayesi anlatiyor")
+	return notes
 
 func _generate_valid_documents(name: String, amount: int, currency: String) -> Array:
 	return [{
