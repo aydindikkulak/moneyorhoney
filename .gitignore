@@ -2,8 +2,16 @@
 .godot/
 *.translation
 
-# Exported builds
-export/
+# Exported builds (ignore binaries, keep config)
+export/web/*.html
+export/web/*.js
+export/web/*.wasm
+export/web/*.pck
+export/web/*.png
+export/web/*.ico
+export/web/*.svg
+export/web/*.json
+export/web/*.zip
 build/
 
 # OS specific
