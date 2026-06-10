@@ -31,7 +31,7 @@ func start_game():
 	total_money_earned = 0
 	total_money_lost = 0
 	game_started.emit()
-	start_day()
+	# start_day() çağrısını kaldır - GameScene'den çağrılacak
 
 func start_day():
 	current_state = GameState.PLAYING

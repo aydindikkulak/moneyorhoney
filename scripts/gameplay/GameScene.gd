@@ -72,7 +72,7 @@ func _ready():
 	_connect_signals()
 	_setup_ui()
 	
-	GameManager.start_game()
+	# Level intro panelini göster - buton ile gün başlatılacak
 	_show_level_intro()
 
 func _connect_signals():
@@ -148,6 +148,7 @@ func _on_start_day():
 	_start_day()
 
 func _start_day():
+	GameManager.start_day()  # HUD timer'ı başlat
 	current_customer_index = 0
 	total_customers = LevelManager.get_customer_count(GameManager.current_level)
 	_generate_customers()
