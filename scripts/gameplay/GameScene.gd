@@ -1,7 +1,7 @@
 extends Control
 
 @onready var customer_name_label: Label = $CustomerArea/VBoxContainer/CustomerNameLabel
-@onready var customer_sprite: ColorRect = $CustomerArea/VBoxContainer/CustomerSprite
+@onready var customer_sprite: TextureRect = $CustomerArea/VBoxContainer/CustomerSprite
 @onready var mood_label: Label = $CustomerArea/VBoxContainer/MoodLabel
 @onready var purpose_label: Label = $CustomerArea/VBoxContainer/PurposeLabel
 @onready var source_label: Label = $CustomerArea/VBoxContainer/SourceLabel
@@ -14,6 +14,7 @@ extends Control
 @onready var document_panel: PanelContainer = $DocumentPanel
 @onready var doc_title_label: Label = $DocumentPanel/VBoxContainer/DocTitleLabel
 @onready var doc_content_label: Label = $DocumentPanel/VBoxContainer/DocContentLabel
+@onready var doc_texture_rect: TextureRect = $DocumentPanel/VBoxContainer/DocTextureRect
 
 @onready var banknote_title: Label = $InspectionArea/VBoxContainer/BanknoteTitle
 @onready var banknote_display: ColorRect = $InspectionArea/VBoxContainer/BanknoteDisplay
@@ -100,7 +101,23 @@ func _setup_ui():
 	scale_btn.visible = "scale" in tools
 	microscope_btn.visible = "microscope" in tools
 	
+	# Load tool icons
+	_load_tool_icon(magnifier_btn, "magnifier")
+	_load_tool_icon(uv_lamp_btn, "uv_lamp")
+	_load_tool_icon(scale_btn, "scale")
+	_load_tool_icon(microscope_btn, "microscope")
+	
 	document_panel.visible = LevelManager.has_documents(level)
+
+func _load_tool_icon(button: Button, tool_name: String):
+	var texture = CurrencyDatabase.load_tool_texture(tool_name)
+	if texture:
+		var icon_image = texture.get_image()
+		if icon_image:
+			icon_image.resize(24, 24, Image.INTERPOLATE_NEAREST)
+			var resized_texture = ImageTexture.create_from_image(icon_image)
+			button.icon = resized_texture
+			button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
 
 func _show_level_intro():
 	var level_data = LevelManager.get_level_data(GameManager.current_level)
@@ -162,17 +179,28 @@ func _display_customer(customer: Dictionary):
 	amount_label.text = "Miktar: %s %d" % [customer.get("currency", ""), customer.get("amount", 0)]
 	response_label.text = ""
 	
+	# Load customer NPC sprite
+	var npc_type = customer.get("mood", "normal")
+	var npc_variant = customer.get("sprite_index", 0) % 3
+	var npc_texture = CurrencyDatabase.load_npc_texture(npc_type, npc_variant)
+	if npc_texture:
+		customer_sprite.texture = npc_texture
+	
 	var banknote = customer.get("banknote", {})
 	var currency = banknote.get("currency", "")
 	var denomination = banknote.get("denomination", 0)
 	var serial = banknote.get("serial_number", "")
+	var is_fake = banknote.get("is_fake", false)
 	
 	banknote_title.text = "%s %d" % [currency, denomination]
 	serial_label.text = "Seri No: %s" % serial
 	
-	var colors = CurrencyDatabase.get_currency_data(currency).get("colors", {})
-	var primary_color = colors.get("primary", "#666666")
-	banknote_display.color = Color(primary_color)
+	# Load banknote sprite
+	var banknote_texture = CurrencyDatabase.load_banknote_texture(currency, denomination, is_fake)
+	if banknote_texture:
+		var banknote_sprite_node = banknote_display.get_node_or_null("BanknoteSprite")
+		if banknote_sprite_node:
+			banknote_sprite_node.texture = banknote_texture
 	
 	findings_list.text = ""
 	suspicion_bar.value = 0
@@ -198,6 +226,15 @@ func _display_documents(documents: Array, customer: Dictionary):
 			doc_text += "Not: %s\n" % doc.get("note", "")
 		doc_text += "\n"
 	doc_content_label.text = doc_text
+	
+	# Load document texture (show first document)
+	if documents.size() > 0:
+		var first_doc = documents[0]
+		var doc_type = first_doc.get("type", "invoice")
+		var variant = randi() % 3
+		var doc_texture = CurrencyDatabase.load_document_texture(doc_type, variant)
+		if doc_texture:
+			doc_texture_rect.texture = doc_texture
 
 func _on_ask_source():
 	var response = customer_ai.respond_to_question("source")

@@ -188,3 +188,41 @@ func _generate_serial_number(currency_code: String) -> String:
 	var prefix = currency_code.substr(0, 2).to_upper()
 	var number = str(randi() % 99999999).pad_zeros(8)
 	return prefix + number
+
+func get_banknote_texture_path(currency_code: String, denomination: int, is_fake: bool) -> String:
+	var currency_lower = currency_code.to_lower()
+	var note_type = "fake" if is_fake else "real"
+	return "res://assets/sprites/currencies/%s/%s_%d_%s.png" % [currency_lower, currency_lower, denomination, note_type]
+
+func get_npc_texture_path(npc_type: String, variant: int = 0) -> String:
+	return "res://assets/sprites/npcs/npc_%s_%d.png" % [npc_type, variant]
+
+func get_tool_texture_path(tool_name: String) -> String:
+	return "res://assets/sprites/tools/%s.png" % tool_name
+
+func get_document_texture_path(doc_type: String, variant: int = 0) -> String:
+	return "res://assets/sprites/documents/%s_%d.png" % [doc_type, variant]
+
+func load_banknote_texture(currency_code: String, denomination: int, is_fake: bool) -> Texture2D:
+	var path = get_banknote_texture_path(currency_code, denomination, is_fake)
+	if ResourceLoader.exists(path):
+		return load(path)
+	return null
+
+func load_npc_texture(npc_type: String, variant: int = 0) -> Texture2D:
+	var path = get_npc_texture_path(npc_type, variant)
+	if ResourceLoader.exists(path):
+		return load(path)
+	return null
+
+func load_tool_texture(tool_name: String) -> Texture2D:
+	var path = get_tool_texture_path(tool_name)
+	if ResourceLoader.exists(path):
+		return load(path)
+	return null
+
+func load_document_texture(doc_type: String, variant: int = 0) -> Texture2D:
+	var path = get_document_texture_path(doc_type, variant)
+	if ResourceLoader.exists(path):
+		return load(path)
+	return null
