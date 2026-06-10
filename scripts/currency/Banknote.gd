@@ -8,37 +8,26 @@ var banknote_data: Dictionary = {}
 var is_inspected: bool = false
 var tool_results: Dictionary = {}
 
-enum ToolType {
-	NONE,
-	MAGNIFIER,
-	UV_LAMP,
-	SCALE,
-	MICROSCOPE
-}
-
-var current_tool: ToolType = ToolType.NONE
-
 func setup(data: Dictionary):
 	banknote_data = data
 	is_inspected = false
 	tool_results.clear()
 	inspection_started.emit(banknote_data)
 
-func use_tool(tool: ToolType) -> Dictionary:
-	current_tool = tool
+func use_tool(tool_type: int) -> Dictionary:
 	var result = {}
 	
-	match tool:
-		ToolType.MAGNIFIER:
+	match tool_type:
+		1:  # MAGNIFIER
 			result = _check_magnifier()
-		ToolType.UV_LAMP:
+		2:  # UV_LAMP
 			result = _check_uv_lamp()
-		ToolType.SCALE:
+		3:  # SCALE
 			result = _check_scale()
-		ToolType.MICROSCOPE:
+		4:  # MICROSCOPE
 			result = _check_microscope()
 	
-	tool_results[tool] = result
+	tool_results[tool_type] = result
 	return result
 
 func _check_magnifier() -> Dictionary:

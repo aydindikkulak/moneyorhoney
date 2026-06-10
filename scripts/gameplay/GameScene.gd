@@ -274,6 +274,8 @@ func _on_microscope():
 
 func _display_findings(findings: Dictionary):
 	var text = ""
+	
+	# Görsel kontrol sonuçları
 	if findings.has("color_issue"):
 		if findings["color_issue"]:
 			text += "[!] Renk tonu farkli\n"
@@ -304,6 +306,25 @@ func _display_findings(findings: Dictionary):
 			text += "[!] Mikro yazilar eksik\n"
 		else:
 			text += "[OK] Mikro yazilar mevcut\n"
+	
+	# Belge kontrol sonuçları
+	if not currency_inspector.document_findings.is_empty():
+		text += "\n--- BELGE KONTROLU ---\n"
+		if currency_inspector.document_findings.get("all_valid", true):
+			text += "[OK] Belgeler gecerli\n"
+		else:
+			var issues = currency_inspector.document_findings.get("issues", [])
+			for issue in issues:
+				text += "[!] " + issue + "\n"
+	
+	# Kara para kontrol sonuçları
+	if not currency_inspector.laundering_findings.is_empty():
+		var risk_score = currency_inspector.laundering_findings.get("risk_score", 0.0)
+		if risk_score > 0.3:
+			text += "\n--- KARA PARA RISKI ---\n"
+			var indicators = currency_inspector.laundering_findings.get("indicators", [])
+			for indicator in indicators:
+				text += "[!] " + indicator + "\n"
 	
 	findings_list.text = text
 	

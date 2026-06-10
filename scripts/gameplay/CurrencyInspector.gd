@@ -3,6 +3,8 @@ extends Node
 signal inspection_complete(result: Dictionary)
 signal visual_check_complete(result: Dictionary)
 signal tool_check_complete(tool: String, result: Dictionary)
+signal document_check_complete(result: Dictionary)
+signal laundering_check_complete(result: Dictionary)
 
 var current_banknote: Banknote
 var current_customer_data: Dictionary = {}
@@ -10,10 +12,15 @@ var active_tool: int = 0
 
 var visual_findings: Dictionary = {}
 var tool_findings: Dictionary = {}
+var document_findings: Dictionary = {}
+var laundering_findings: Dictionary = {}
 var overall_suspicion: float = 0.0
 
+var document_verifier: DocumentVerifier
+
 func _ready():
-	pass
+	document_verifier = DocumentVerifier.new()
+	add_child(document_verifier)
 
 func start_inspection(customer_data: Dictionary):
 	current_customer_data = customer_data
@@ -22,7 +29,41 @@ func start_inspection(customer_data: Dictionary):
 	
 	visual_findings.clear()
 	tool_findings.clear()
+	document_findings.clear()
+	laundering_findings.clear()
 	overall_suspicion = 0.0
+	
+	_check_documents()
+	_check_money_laundering()
+
+func _check_documents():
+	if current_customer_data.is_empty():
+		return
+	
+	var documents = current_customer_data.get("documents", [])
+	if documents.is_empty():
+		return
+	
+	document_findings = document_verifier.verify_documents(documents, current_customer_data)
+	
+	if not document_findings.get("all_valid", true):
+		overall_suspicion += 0.3
+	
+	document_check_complete.emit(document_findings)
+
+func _check_money_laundering():
+	if current_customer_data.is_empty():
+		return
+	
+	laundering_findings = document_verifier.check_money_laundering_indicators(current_customer_data)
+	
+	var risk_score = laundering_findings.get("risk_score", 0.0)
+	if risk_score > 0.6:
+		overall_suspicion += 0.4
+	elif risk_score > 0.3:
+		overall_suspicion += 0.2
+	
+	laundering_check_complete.emit(laundering_findings)
 
 func perform_visual_check() -> Dictionary:
 	if current_banknote == null:
