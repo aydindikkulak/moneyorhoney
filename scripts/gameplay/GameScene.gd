@@ -149,6 +149,7 @@ func _on_start_day():
 
 func _start_day():
 	GameManager.start_day()  # HUD timer'ı başlat
+	_setup_ui()  # Tool butonlarını güncelle
 	current_customer_index = 0
 	total_customers = LevelManager.get_customer_count(GameManager.current_level)
 	_generate_customers()

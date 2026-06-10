@@ -20,7 +20,7 @@ signal achievement_displayed(achievement_name: String)
 @onready var achievement_name_label: Label = $AchievementPopup/VBox/AchievementName
 @onready var achievement_desc_label: Label = $AchievementPopup/VBox/AchievementDesc
 
-var time_remaining: int = 60
+var time_remaining: float = 60.0
 var timer_active: bool = false
 var decision_start_time: float = 0.0
 
