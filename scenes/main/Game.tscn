@@ -110,72 +110,6 @@ theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_font_sizes/font_size = 16
 text = "Musteri: 0/0"
 
-[node name="ComboPopup" type="Label" parent="HUD"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -100.0
-offset_right = 100.0
-offset_bottom = -60.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0.9, 0.2, 1)
-theme_override_font_sizes/font_size = 32
-text = "COMBO x2!"
-horizontal_alignment = 1
-visible = false
-
-[node name="AchievementPopup" type="PanelContainer" parent="HUD"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -150.0
-offset_top = 50.0
-offset_right = 150.0
-offset_bottom = 120.0
-grow_horizontal = 2
-visible = false
-
-[node name="VBox" type="VBoxContainer" parent="HUD/AchievementPopup"]
-layout_mode = 2
-
-[node name="AchievementName" type="Label" parent="HUD/AchievementPopup/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
-theme_override_font_sizes/font_size = 18
-text = "Basari!"
-horizontal_alignment = 1
-
-[node name="AchievementDesc" type="Label" parent="HUD/AchievementPopup/VBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Aciklama"
-horizontal_alignment = 1
-autowrap_mode = 2
-
-[node name="DecisionFeedback" type="Label" parent="HUD"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -200.0
-offset_right = 100.0
-offset_bottom = -170.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 28
-text = ""
-horizontal_alignment = 1
-visible = false
-
 [node name="CustomerArea" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 0
@@ -630,3 +564,72 @@ layout_mode = 2
 custom_minimum_size = Vector2(200, 50)
 theme_override_font_sizes/font_size = 20
 text = "Gune Basla"
+
+[node name="ComboPopup" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 2
+z_index = 100
+z_as_relative = false
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.2, 1)
+theme_override_font_sizes/font_size = 32
+text = "COMBO x2!"
+horizontal_alignment = 1
+visible = false
+
+[node name="AchievementPopup" type="PanelContainer" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 50.0
+offset_right = 150.0
+offset_bottom = 120.0
+grow_horizontal = 2
+z_index = 100
+z_as_relative = false
+mouse_filter = 2
+visible = false
+
+[node name="VBox" type="VBoxContainer" parent="AchievementPopup"]
+
+[node name="AchievementName" type="Label" parent="AchievementPopup/VBox"]
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "Basari!"
+horizontal_alignment = 1
+
+[node name="AchievementDesc" type="Label" parent="AchievementPopup/VBox"]
+theme_override_font_sizes/font_size = 14
+text = "Aciklama"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="DecisionFeedback" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -200.0
+offset_right = 100.0
+offset_bottom = -170.0
+grow_horizontal = 2
+grow_vertical = 2
+z_index = 100
+z_as_relative = false
+mouse_filter = 2
+theme_override_font_sizes/font_size = 28
+text = ""
+horizontal_alignment = 1
+visible = false

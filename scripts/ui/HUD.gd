@@ -14,11 +14,11 @@ signal achievement_displayed(achievement_name: String)
 @onready var combo_label: Label = $TopBar/ComboLabel
 @onready var customers_served_label: Label = $TopBar/CustomersServedLabel
 
-@onready var decision_feedback: Label = $DecisionFeedback
-@onready var combo_popup: Label = $ComboPopup
-@onready var achievement_popup: PanelContainer = $AchievementPopup
-@onready var achievement_name_label: Label = $AchievementPopup/VBox/AchievementName
-@onready var achievement_desc_label: Label = $AchievementPopup/VBox/AchievementDesc
+@onready var decision_feedback: Label = get_parent().get_node("DecisionFeedback")
+@onready var combo_popup: Label = get_parent().get_node("ComboPopup")
+@onready var achievement_popup: PanelContainer = get_parent().get_node("AchievementPopup")
+@onready var achievement_name_label: Label = get_parent().get_node("AchievementPopup/VBox/AchievementName")
+@onready var achievement_desc_label: Label = get_parent().get_node("AchievementPopup/VBox/AchievementDesc")
 
 var time_remaining: float = 60.0
 var timer_active: bool = false
