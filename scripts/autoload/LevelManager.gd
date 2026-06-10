@@ -151,3 +151,56 @@ func get_fake_difficulty(level_id: int) -> String:
 func get_time_per_customer(level_id: int) -> int:
 	var level_data = get_level_data(level_id)
 	return level_data.get("time_per_customer", 60)
+
+func get_level_progression(level_id: int) -> Dictionary:
+	var level_data = get_level_data(level_id)
+	return {
+		"required_accuracy": level_data.get("required_accuracy", 0.8),
+		"max_mistakes": level_data.get("max_mistakes", 3),
+		"bonus_threshold": level_data.get("bonus_threshold", 0.95),
+		"unlock_next_level": level_data.get("unlock_next_level", true)
+	}
+
+func get_tutorial_hints(level_id: int) -> Array:
+	var hints = []
+	match level_id:
+		1:
+			hints.append("Parayi dikkatlice inceleyin. Renk ve desen farkliliklarina dikkat edin.")
+			hints.append("Sahte paralar genellikle daha soluk veya farkli tonlardadir.")
+		2:
+			hints.append("Buyutec ile seri numaralarini kontrol edin.")
+			hints.append("UV isik ile guvenlik ozelliklerini test edin.")
+		3:
+			hints.append("Belgeleri musteri bilgileriyle eslestirin.")
+			hints.append("Miktar ve isim uyumsuzluklarina dikkat edin.")
+		4:
+			hints.append("Kara para isaretlerini arayin: buyuk miktarlar, supheli kaynaklar.")
+			hints.append("Musteri davranislarini gozlemleyin.")
+		5:
+			hints.append("Tum becerilerinizi kullanin. Zaman sinirli!")
+			hints.append("Hiz ve dogruluk onemlidir.")
+	return hints
+
+func check_level_completion(level_id: int, stats: Dictionary) -> Dictionary:
+	var progression = get_level_progression(level_id)
+	var accuracy = stats.get("accuracy", 0.0)
+	var mistakes = stats.get("mistakes", 0)
+	
+	var passed = accuracy >= progression["required_accuracy"] and mistakes <= progression["max_mistakes"]
+	var bonus_earned = accuracy >= progression["bonus_threshold"]
+	
+	return {
+		"passed": passed,
+		"bonus_earned": bonus_earned,
+		"can_progress": passed and progression["unlock_next_level"],
+		"next_level": level_id + 1 if passed and progression["unlock_next_level"] else level_id
+	}
+
+func get_difficulty_scaling(level_id: int) -> Dictionary:
+	var base_difficulty = float(level_id) / 5.0
+	return {
+		"fake_detection_difficulty": base_difficulty,
+		"customer_suspicion_threshold": 0.7 - (base_difficulty * 0.2),
+		"time_pressure_multiplier": 1.0 - (base_difficulty * 0.15),
+		"document_complexity": level_id
+	}

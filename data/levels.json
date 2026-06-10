@@ -14,7 +14,11 @@
 		"suspicious_count": 0,
 		"money_laundering_count": 0,
 		"required_correct": 4,
-		"time_per_customer": 60
+		"time_per_customer": 60,
+		"required_accuracy": 0.75,
+		"max_mistakes": 3,
+		"bonus_threshold": 0.9,
+		"unlock_next_level": true
 	},
 	{
 		"id": 2,
@@ -31,7 +35,11 @@
 		"suspicious_count": 1,
 		"money_laundering_count": 0,
 		"required_correct": 6,
-		"time_per_customer": 55
+		"time_per_customer": 55,
+		"required_accuracy": 0.8,
+		"max_mistakes": 3,
+		"bonus_threshold": 0.92,
+		"unlock_next_level": true
 	},
 	{
 		"id": 3,
@@ -48,7 +56,11 @@
 		"suspicious_count": 2,
 		"money_laundering_count": 1,
 		"required_correct": 8,
-		"time_per_customer": 50
+		"time_per_customer": 50,
+		"required_accuracy": 0.82,
+		"max_mistakes": 2,
+		"bonus_threshold": 0.95,
+		"unlock_next_level": true
 	},
 	{
 		"id": 4,
@@ -65,7 +77,11 @@
 		"suspicious_count": 3,
 		"money_laundering_count": 2,
 		"required_correct": 10,
-		"time_per_customer": 45
+		"time_per_customer": 45,
+		"required_accuracy": 0.85,
+		"max_mistakes": 2,
+		"bonus_threshold": 0.95,
+		"unlock_next_level": true
 	},
 	{
 		"id": 5,
@@ -82,6 +98,10 @@
 		"suspicious_count": 4,
 		"money_laundering_count": 3,
 		"required_correct": 13,
-		"time_per_customer": 40
+		"time_per_customer": 40,
+		"required_accuracy": 0.88,
+		"max_mistakes": 1,
+		"bonus_threshold": 0.97,
+		"unlock_next_level": false
 	}
 ]
