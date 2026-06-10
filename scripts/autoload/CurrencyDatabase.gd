@@ -157,7 +157,8 @@ func generate_banknote_data(currency_code: String, denomination: int, is_fake: b
 		"is_fake": is_fake,
 		"difficulty": difficulty,
 		"security_features": {},
-		"visual_properties": {}
+		"visual_properties": {},
+		"detection_hints": []
 	}
 	
 	if is_fake:
@@ -172,6 +173,8 @@ func generate_banknote_data(currency_code: String, denomination: int, is_fake: b
 		var missing = pattern.get("missing_features", [])
 		for feature in all_features:
 			banknote["security_features"][feature] = not (feature in missing)
+		
+		banknote["detection_hints"] = _generate_detection_hints(currency_code, difficulty, missing)
 	else:
 		banknote["visual_properties"] = {
 			"color_deviation": 0.0,
@@ -181,6 +184,7 @@ func generate_banknote_data(currency_code: String, denomination: int, is_fake: b
 		var all_features = currency.get("security_features", {})
 		for feature in all_features:
 			banknote["security_features"][feature] = true
+		banknote["detection_hints"] = []
 	
 	return banknote
 
@@ -226,3 +230,73 @@ func load_document_texture(doc_type: String, variant: int = 0) -> Texture2D:
 	if ResourceLoader.exists(path):
 		return load(path)
 	return null
+
+func _generate_detection_hints(currency_code: String, difficulty: String, missing_features: Array) -> Array:
+	var hints = []
+	
+	match difficulty:
+		"easy":
+			if "uv_features" in missing_features:
+				hints.append("UV isik altinda guvenlik izi gorunmuyor")
+			if "micro_printing" in missing_features:
+				hints.append("Mikro yazilar bulanik veya eksik")
+			hints.append("Renk tonu hafif farkli")
+		
+		"medium":
+			if "micro_printing" in missing_features:
+				hints.append("Buyutec altinda mikro yazilar net degil")
+			if currency_code == "USD":
+				hints.append("3D guvenlik seridi hareket etmiyor")
+			elif currency_code == "EUR":
+				hints.append("Hologram serit soluk")
+		
+		"hard":
+			hints.append("Agirlik %d%% farkli" % int(randf_range(2, 5)))
+			if currency_code == "USD":
+				hints.append("Renk degisen murekkep yavas tepki veriyor")
+		
+		"professional":
+			hints.append("Cok iyi kopya, sadece uzman gozu yakalayabilir")
+			if currency_code == "USD" or currency_code == "EUR":
+				hints.append("Watermark hafif bulanik")
+	
+	return hints
+
+func get_banknote_description(banknote_data: Dictionary) -> String:
+	var currency = banknote_data.get("currency", "")
+	var denomination = banknote_data.get("denomination", 0)
+	var serial = banknote_data.get("serial_number", "")
+	var currency_info = get_currency_data(currency)
+	var symbol = currency_info.get("symbol", "")
+	
+	return "%s %d%s - SN: %s" % [symbol, denomination, currency, serial]
+
+func get_security_check_guide(currency_code: String) -> Dictionary:
+	var currency = get_currency_data(currency_code)
+	var features = currency.get("security_features", {})
+	var guide = {}
+	
+	for feature in features:
+		match feature:
+			"3d_ribbon":
+				guide[feature] = "3D guvenlik seridi: Banknotu egdiginde mavi-yesil arasi renk degisir"
+			"color_shifting_ink":
+				guide[feature] = "Renk degisen mureke: Sayinin rengini egince bakir-yesil arasi degisir"
+			"watermark":
+				guide[feature] = "Watermark: Isiga karsi tutuldugunda portre gorunur"
+			"uv_features":
+				guide[feature] = "UV ozellikler: UV isik altinda kirmizi-mavi izler gorunur"
+			"micro_printing":
+				guide[feature] = "Mikro yazilar: Buyutec altinda kucuk yazilar okunabilir"
+			"hologram_strip":
+				guide[feature] = "Hologram serit: Banknotu hareket ettirince hologram degisir"
+			"security_thread":
+				guide[feature] = "Guvenlik ipligi: Isiga karsi tutuldugunda dikey bir cizgi gorunur"
+			"hologram":
+				guide[feature] = "Hologram: Hareket ettirince 3D goruntu degisir"
+			"metallic_patch":
+				guide[feature] = "Metalik yama: Isik altinda parlayan metalik alan"
+			"raised_print":
+				guide[feature] = "Kabartma baski: Parmakla dokunuldugunda kabartma hissedilir"
+	
+	return guide
