@@ -7,7 +7,7 @@ signal achievement_displayed(achievement_name: String)
 @onready var money_label: Label = $TopBar/MoneyLabel
 @onready var level_label: Label = $TopBar/LevelLabel
 @onready var day_label: Label = $TopBar/DayLabel
-@onready var timer_label: Label = $TopBar/TimerLabel
+@onready var week_label: Label = $TopBar/WeekLabel
 @onready var streak_label: Label = $TopBar/StreakLabel
 @onready var accuracy_label: Label = $TopBar/AccuracyLabel
 @onready var multiplier_label: Label = $TopBar/MultiplierLabel
@@ -20,13 +20,11 @@ signal achievement_displayed(achievement_name: String)
 @onready var achievement_name_label: Label = get_parent().get_node("AchievementPopup/VBox/AchievementName")
 @onready var achievement_desc_label: Label = get_parent().get_node("AchievementPopup/VBox/AchievementDesc")
 
-var time_remaining: float = 60.0
-var timer_active: bool = false
 var decision_start_time: float = 0.0
 
 func _ready():
 	ScoringSystem.score_changed.connect(_on_score_changed)
-	ScoringSystem.money_changed.connect(_on_money_changed)
+	EarningsSystem.earnings_changed.connect(_on_earnings_changed)
 	ScoringSystem.combo_activated.connect(_on_combo_activated)
 	ScoringSystem.achievement_unlocked.connect(_on_achievement_unlocked)
 	GameManager.day_started.connect(_on_day_started)
@@ -35,20 +33,13 @@ func _ready():
 	combo_popup.visible = false
 	achievement_popup.visible = false
 
-func _process(delta):
-	if timer_active and time_remaining > 0:
-		time_remaining -= delta
-		update_timer()
-		if time_remaining <= 0:
-			timer_active = false
-			_on_time_expired()
-
 func update_all():
 	var stats = ScoringSystem.get_stats()
 	score_label.text = "Skor: %d" % stats["score"]
-	money_label.text = "Kasa: $%d" % stats["money"]
+	money_label.text = "Kasa: $%d" % EarningsSystem.get_total_earnings()
 	level_label.text = "Seviye: %d" % GameManager.current_level
-	day_label.text = "Gun: %d" % GameManager.current_day
+	week_label.text = "Hafta: %d" % WeekCycleSystem.get_current_week()
+	day_label.text = "Gun: %d" % WeekCycleSystem.get_current_day()
 	streak_label.text = "Seri: %d" % stats["streak"]
 	accuracy_label.text = "Dogruluk: %d%%" % (stats["accuracy"] * 100)
 	customers_served_label.text = "Musteri: %d/%d" % [stats["total_served"], stats["total_served"] + stats["wrong"]]
@@ -65,36 +56,10 @@ func update_all():
 	else:
 		combo_label.visible = false
 
-func update_timer():
-	var minutes = int(time_remaining) / 60
-	var seconds = int(time_remaining) % 60
-	timer_label.text = "Sure: %02d:%02d" % [minutes, seconds]
-	
-	if time_remaining < 10:
-		timer_label.add_theme_color_override("font_color", Color.RED)
-	elif time_remaining < 20:
-		timer_label.add_theme_color_override("font_color", Color.YELLOW)
-	else:
-		timer_label.add_theme_color_override("font_color", Color.WHITE)
-
-func start_timer(seconds: int):
-	time_remaining = seconds
-	timer_active = true
-	update_timer()
-
-func stop_timer():
-	timer_active = false
-
-func start_decision_timer():
-	decision_start_time = Time.get_ticks_msec() / 1000.0
-
-func get_decision_time() -> float:
-	return (Time.get_ticks_msec() / 1000.0) - decision_start_time
-
 func _on_score_changed(new_score: int):
 	score_label.text = "Skor: %d" % new_score
 
-func _on_money_changed(new_amount: int):
+func _on_earnings_changed(new_amount: int):
 	money_label.text = "Kasa: $%d" % new_amount
 
 func _on_combo_activated(combo_count: int):
@@ -112,13 +77,13 @@ func _on_achievement_unlocked(achievement_id: String):
 		_show_achievement_popup(achievement["name"], achievement["description"])
 
 func _on_day_started():
-	var level = GameManager.current_level
-	var time_per_customer = LevelManager.get_time_per_customer(level)
-	start_timer(time_per_customer)
 	update_all()
 
-func _on_time_expired():
-	print("Sure doldu!")
+func start_decision_timer():
+	decision_start_time = Time.get_ticks_msec() / 1000.0
+
+func get_decision_time() -> float:
+	return (Time.get_ticks_msec() / 1000.0) - decision_start_time
 
 func show_decision_feedback(is_correct: bool, points: int = 0):
 	if decision_feedback:

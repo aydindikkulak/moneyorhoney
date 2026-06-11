@@ -1,13 +1,11 @@
 extends Node
 
 signal score_changed(new_score: int)
-signal money_changed(new_amount: int)
 signal accuracy_changed(new_accuracy: float)
 signal achievement_unlocked(achievement_id: String)
 signal combo_activated(combo_count: int)
 
 var current_score: int = 0
-var current_money: int = 0
 var total_correct: int = 0
 var total_wrong: int = 0
 var streak_count: int = 0
@@ -18,7 +16,6 @@ var max_combo: int = 0
 var score_multiplier: float = 1.0
 var combo_multiplier: float = 1.0
 
-# İstatistikler
 var total_customers_served: int = 0
 var total_fake_detected: int = 0
 var total_money_laundering_caught: int = 0
@@ -26,7 +23,6 @@ var perfect_days: int = 0
 var fastest_decision_time: float = 999.0
 var total_decision_time: float = 0.0
 
-# Başarılar
 var achievements: Dictionary = {}
 
 func _ready():
@@ -48,7 +44,6 @@ func _init_achievements():
 
 func reset():
 	current_score = 0
-	current_money = 0
 	total_correct = 0
 	total_wrong = 0
 	streak_count = 0
@@ -117,6 +112,7 @@ func add_wrong_decision(penalty: int = 50):
 	score_multiplier = 1.0
 	combo_multiplier = 1.0
 	
+	combo_activated.emit(0)
 	score_changed.emit(current_score)
 	return -penalty
 
@@ -139,14 +135,6 @@ func add_money_laundering_caught(points: int = 200):
 	
 	score_changed.emit(current_score)
 	return int(points * score_multiplier)
-
-func add_money(amount: int):
-	current_money += amount
-	money_changed.emit(current_money)
-
-func subtract_money(amount: int):
-	current_money = max(0, current_money - amount)
-	money_changed.emit(current_money)
 
 func _calculate_speed_bonus(decision_time: float) -> int:
 	if decision_time <= 0:
@@ -194,7 +182,6 @@ func get_average_decision_time() -> float:
 func get_stats() -> Dictionary:
 	return {
 		"score": current_score,
-		"money": current_money,
 		"correct": total_correct,
 		"wrong": total_wrong,
 		"accuracy": get_accuracy(),

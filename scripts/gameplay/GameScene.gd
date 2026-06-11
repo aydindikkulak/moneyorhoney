@@ -4,6 +4,7 @@ const CustomerAI = preload("res://scripts/gameplay/CustomerAI.gd")
 const CurrencyInspector = preload("res://scripts/gameplay/CurrencyInspector.gd")
 const ToolSystem = preload("res://scripts/gameplay/ToolSystem.gd")
 const DocumentVerifier = preload("res://scripts/gameplay/DocumentVerifier.gd")
+const DecisionSystem = preload("res://scripts/gameplay/DecisionSystem.gd")
 
 @onready var customer_name_label: Label = $CustomerArea/VBoxContainer/CustomerNameLabel
 @onready var customer_sprite: TextureRect = $CustomerArea/VBoxContainer/CustomerSprite
@@ -50,6 +51,7 @@ var customer_ai
 var currency_inspector
 var tool_system
 var document_verifier
+var decision_system
 
 var current_customer_index: int = 0
 var total_customers: int = 0
@@ -69,10 +71,12 @@ func _ready():
 	document_verifier = DocumentVerifier.new()
 	add_child(document_verifier)
 	
+	decision_system = DecisionSystem.new()
+	add_child(decision_system)
+	
 	_connect_signals()
 	_setup_ui()
 	
-	# Level intro panelini göster - buton ile gün başlatılacak
 	_show_level_intro()
 
 func _connect_signals():
@@ -357,19 +361,23 @@ func _on_accept():
 	if not is_processing_customer:
 		return
 	
-	var decision = currency_inspector.make_decision()
-	var is_fake = decision.get("is_fake", false)
-	var is_money_laundering = decision.get("is_money_laundering", false)
+	var customer = customer_ai.current_customer
+	var banknote = customer.get("banknote", {})
+	var amount = customer.get("amount", 0)
 	
-	var is_correct = not is_fake and not is_money_laundering
-	var amount = customer_ai.current_customer.get("amount", 0)
+	var result = decision_system.make_decision(
+		DecisionSystem.DecisionType.ACCEPT,
+		banknote,
+		customer
+	)
 	
-	if is_correct:
+	if result["correct"]:
 		ScoringSystem.add_correct_decision()
-		ScoringSystem.add_money(amount)
+		EarningsSystem.process_transaction(amount, true)
 		GameManager.make_decision(true, amount)
 	else:
 		ScoringSystem.add_wrong_decision()
+		EarningsSystem.process_transaction(amount, false)
 		GameManager.make_decision(false, amount)
 	
 	_show_decision_feedback(true)
@@ -382,19 +390,22 @@ func _on_reject():
 	if not is_processing_customer:
 		return
 	
-	var decision = currency_inspector.make_decision()
-	var is_fake = decision.get("is_fake", false)
-	var is_money_laundering = decision.get("is_money_laundering", false)
+	var customer = customer_ai.current_customer
+	var banknote = customer.get("banknote", {})
+	var amount = customer.get("amount", 0)
 	
-	var is_correct = is_fake or is_money_laundering
-	var amount = customer_ai.current_customer.get("amount", 0)
+	var result = decision_system.make_decision(
+		DecisionSystem.DecisionType.REJECT,
+		banknote,
+		customer
+	)
 	
-	if is_correct:
+	if result["correct"]:
 		ScoringSystem.add_correct_decision(150)
 		GameManager.make_decision(true, 0)
 	else:
 		ScoringSystem.add_wrong_decision()
-		ScoringSystem.subtract_money(amount)
+		EarningsSystem.process_transaction(amount, false)
 		GameManager.make_decision(false, amount)
 	
 	_show_decision_feedback(false)
@@ -415,15 +426,35 @@ func _show_decision_feedback(was_accepted: bool):
 		hud.show_decision_feedback(is_correct)
 
 func _end_day():
+	WeekCycleSystem.end_day()
 	GameManager.end_day()
 	day_end_report.visible = true
+	
+	if WeekCycleSystem.is_week_end():
+		_on_week_ended()
 
 func _on_day_complete():
 	day_end_report.visible = false
 	if GameManager.current_state == GameManager.GameState.GAME_OVER:
 		day_end_report.show_game_over()
+	elif WeekCycleSystem.is_week_end():
+		_on_week_ended()
 	else:
 		_show_level_intro()
+
+func _on_week_ended():
+	print("Hafta bitti, dükkan açılıyor")
+	GameManager.on_week_ended()
+	# Shop UI'ı aç
+	var shop_scene = preload("res://scenes/ui/WeekEndShop.tscn")
+	var shop_instance = shop_scene.instantiate()
+	add_child(shop_instance)
+	shop_instance.shop_closed.connect(_on_shop_closed)
+
+func _on_shop_closed():
+	print("Dükkan kapandı, yeni seviyeye geçiliyor")
+	GameManager.on_shop_closed()
+	_show_level_intro()
 
 func _on_retry_day():
 	day_end_report.visible = false

@@ -26,6 +26,11 @@ GameManager="*res://scripts/autoload/GameManager.gd"
 LevelManager="*res://scripts/autoload/LevelManager.gd"
 ScoringSystem="*res://scripts/autoload/ScoringSystem.gd"
 CurrencyDatabase="*res://scripts/autoload/CurrencyDatabase.gd"
+WeekCycleSystem="*res://scripts/autoload/WeekCycleSystem.gd"
+EarningsSystem="*res://scripts/autoload/EarningsSystem.gd"
+WarningSystem="*res://scripts/autoload/WarningSystem.gd"
+InventoryManager="*res://scripts/autoload/InventoryManager.gd"
+ShopManager="*res://scripts/autoload/ShopManager.gd"
 
 [display]
 

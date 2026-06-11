@@ -204,3 +204,15 @@ func get_difficulty_scaling(level_id: int) -> Dictionary:
 		"time_pressure_multiplier": 1.0 - (base_difficulty * 0.15),
 		"document_complexity": level_id
 	}
+
+func get_weeks_in_level(level_id: int) -> int:
+	var level_data = get_level_data(level_id)
+	return level_data.get("weeks", 1)
+
+func is_shop_unlocked(level_id: int) -> bool:
+	var level_data = get_level_data(level_id)
+	return level_data.get("shop_unlocked", false)
+
+func get_days_per_week(level_id: int) -> int:
+	var level_data = get_level_data(level_id)
+	return level_data.get("days_per_week", 5)

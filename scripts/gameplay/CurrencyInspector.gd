@@ -74,8 +74,13 @@ func perform_visual_check() -> Dictionary:
 	var banknote_data = current_banknote.banknote_data
 	var findings: Dictionary = {}
 	
+	# Dükkan bonuslarını al
+	var accuracy_bonus = InventoryManager.get_total_accuracy_bonus()
+	
 	var color_dev = banknote_data.get("visual_properties", {}).get("color_deviation", 0.0)
-	if color_dev > 0.15:
+	# Bonus ile tespit eşiğini düşür
+	var color_threshold = 0.15 - (accuracy_bonus * 0.05)
+	if color_dev > color_threshold:
 		findings["color_issue"] = true
 		findings["color_detail"] = "Renk tonu normalden farkli"
 		overall_suspicion += 0.2
@@ -83,7 +88,8 @@ func perform_visual_check() -> Dictionary:
 		findings["color_issue"] = false
 	
 	var size_dev = banknote_data.get("visual_properties", {}).get("size_deviation", 0.0)
-	if size_dev > 0.03:
+	var size_threshold = 0.03 - (accuracy_bonus * 0.01)
+	if size_dev > size_threshold:
 		findings["size_issue"] = true
 		findings["size_detail"] = "Boyut farki goruluyor"
 		overall_suspicion += 0.2

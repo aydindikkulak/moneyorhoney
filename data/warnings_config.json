@@ -1,0 +1,77 @@
+{
+  "max_warnings": 3,
+  "warning_types": {
+    "audit": {
+      "name": "Denetim",
+      "description": "Banka yönetimi tarafından rutin denetim",
+      "trigger_conditions": [
+        "random_event",
+        "low_accuracy"
+      ],
+      "audit_duration": 30.0,
+      "penalty": "warning"
+    },
+    "complaint": {
+      "name": "Müşteri Şikayeti",
+      "description": "Müşteri yanlış işlem yapıldığını bildiriyor",
+      "trigger_conditions": [
+        "wrong_decision",
+        "slow_service"
+      ],
+      "penalty": "warning"
+    },
+    "procedural_error": {
+      "name": "Prosedür Hatası",
+      "description": "İşlem prosedürlerine uyulmadı",
+      "trigger_conditions": [
+        "false_report",
+        "protocol_violation"
+      ],
+      "penalty": "warning"
+    }
+  },
+  "trigger_thresholds": {
+    "accuracy_below": 0.60,
+    "complaint_chance_per_wrong": 0.25,
+    "audit_chance_per_day": 0.10,
+    "false_report_penalty": 100
+  },
+  "consequences": {
+    "warning_1": {
+      "effect": "none",
+      "message": "İlk uyarı: Dikkatli olun!"
+    },
+    "warning_2": {
+      "effect": "salary_penalty",
+      "penalty_amount": 100,
+      "message": "İkinci uyarı: Maaşınızdan kesinti yapılacak!"
+    },
+    "warning_3": {
+      "effect": "game_over",
+      "message": "Üçüncü uyarı: İşten çıkarıldınız!"
+    }
+  },
+  "audit_events": [
+    {
+      "id": "routine_check",
+      "name": "Rutin Kontrol",
+      "description": "Haftalık rutin denetim",
+      "chance": 0.15,
+      "min_week": 1
+    },
+    {
+      "id": "suspicious_activity",
+      "name": "Şüpheli Aktivite",
+      "description": "Şüpheli işlem aktivitesi tespit edildi",
+      "chance": 0.10,
+      "min_week": 2
+    },
+    {
+      "id": "management_visit",
+      "name": "Yönetim Ziyareti",
+      "description": "Banka yönetimi ziyarette",
+      "chance": 0.05,
+      "min_week": 3
+    }
+  ]
+}

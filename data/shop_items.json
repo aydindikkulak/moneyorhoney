@@ -1,0 +1,156 @@
+[
+  {
+    "id": "better_magnifier",
+    "name": "Gelişmiş Büyüteç",
+    "description": "Daha detaylı inceleme, gizli detayları ortaya çıkarır",
+    "type": "tool_upgrade",
+    "tool": "magnifier",
+    "price": 500,
+    "effect": {
+      "accuracy_bonus": 0.15,
+      "inspection_speed": 1.2
+    },
+    "requirements": {
+      "week": 1
+    },
+    "icon": "res://assets/sprites/tools/magnifier.png"
+  },
+  {
+    "id": "better_uv_lamp",
+    "name": "Profesyonel UV Lamba",
+    "description": "Daha güçlü UV ışık, sahte güvenlik özelliklerini kolayca tespit eder",
+    "type": "tool_upgrade",
+    "tool": "uv_lamp",
+    "price": 750,
+    "effect": {
+      "accuracy_bonus": 0.20,
+      "detection_range": 1.5
+    },
+    "requirements": {
+      "week": 2
+    },
+    "icon": "res://assets/sprites/tools/uv_lamp.png"
+  },
+  {
+    "id": "digital_scale",
+    "name": "Dijital Terazi",
+    "description": "Hassas ağırlık ölçümü, küçük sapmaları bile tespit eder",
+    "type": "tool_upgrade",
+    "tool": "scale",
+    "price": 1000,
+    "effect": {
+      "accuracy_bonus": 0.25,
+      "precision": 0.01
+    },
+    "requirements": {
+      "week": 2
+    },
+    "icon": "res://assets/sprites/tools/scale.png"
+  },
+  {
+    "id": "microscope_upgrade",
+    "name": "Dijital Mikroskop",
+    "description": "Mikro yazıları otomatik analiz eder",
+    "type": "tool_upgrade",
+    "tool": "microscope",
+    "price": 1500,
+    "effect": {
+      "accuracy_bonus": 0.30,
+      "auto_analysis": true
+    },
+    "requirements": {
+      "week": 3
+    },
+    "icon": "res://assets/sprites/tools/microscope.png"
+  },
+  {
+    "id": "coffee",
+    "name": "Kahve",
+    "description": "Dikkatinizi artırır, karar süreniz kısalır",
+    "type": "consumable",
+    "price": 100,
+    "effect": {
+      "speed_bonus": 0.10,
+      "duration_days": 5
+    },
+    "requirements": {
+      "week": 1
+    },
+    "icon": "res://assets/sprites/ui/coin.png"
+  },
+  {
+    "id": "energy_drink",
+    "name": "Enerji İçeceği",
+    "description": "Yoğun odaklanma, hata oranını azaltır",
+    "type": "consumable",
+    "price": 200,
+    "effect": {
+      "accuracy_bonus": 0.10,
+      "duration_days": 3
+    },
+    "requirements": {
+      "week": 1
+    },
+    "icon": "res://assets/sprites/ui/coin.png"
+  },
+  {
+    "id": "lucky_charm",
+    "name": "Şanslı Tılsım",
+    "description": "Şansınızı artırır, combo şansını yükseltir",
+    "type": "passive",
+    "price": 800,
+    "effect": {
+      "combo_chance": 0.15,
+      "luck_bonus": 0.10
+    },
+    "requirements": {
+      "week": 2
+    },
+    "icon": "res://assets/sprites/ui/coin.png"
+  },
+  {
+    "id": "desk_lamp",
+    "name": "Masanın Lambası",
+    "description": "Daha iyi aydınlatma, göz yorgunluğunu azaltır",
+    "type": "passive",
+    "price": 400,
+    "effect": {
+      "fatigue_reduction": 0.20,
+      "accuracy_bonus": 0.05
+    },
+    "requirements": {
+      "week": 1
+    },
+    "icon": "res://assets/sprites/ui/coin.png"
+  },
+  {
+    "id": "reference_book",
+    "name": "Referans Kitabı",
+    "description": "Para birimleri hakkında detaylı bilgi, sahte para desenlerini öğrenin",
+    "type": "passive",
+    "price": 600,
+    "effect": {
+      "knowledge_bonus": 0.15,
+      "pattern_recognition": true
+    },
+    "requirements": {
+      "week": 2
+    },
+    "icon": "res://assets/sprites/ui/coin.png"
+  },
+  {
+    "id": "insurance",
+    "name": "Hata Sigortası",
+    "description": "Her hafta ilk hatanız için ceza almazsınız",
+    "type": "passive",
+    "price": 1200,
+    "effect": {
+      "first_mistake_forgiven": true,
+      "penalty_reduction": 0.50
+    },
+    "requirements": {
+      "week": 3
+    },
+    "icon": "res://assets/sprites/ui/coin.png"
+  }
+]

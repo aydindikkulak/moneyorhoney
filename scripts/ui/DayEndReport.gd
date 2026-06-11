@@ -39,7 +39,7 @@ func show_report():
 	accuracy_label.text = "Dogruluk: %d%%" % (stats["accuracy"] * 100)
 	correct_label.text = "Dogru Kararlar: %d" % stats["correct"]
 	wrong_label.text = "Yanlis Kararlar: %d" % stats["wrong"]
-	money_label.text = "Kasa: $%d" % stats["money"]
+	money_label.text = "Kasa: $%d" % EarningsSystem.get_total_earnings()
 	streak_label.text = "En iyi seri: %d" % stats["best_streak"]
 	combo_label.text = "En yuksek combo: x%d" % stats["max_combo"]
 	fake_detected_label.text = "Sahte para yakalanan: %d" % stats["fake_detected"]
@@ -94,7 +94,7 @@ func show_game_over():
 	accuracy_label.text = "Genel Dogruluk: %d%%" % (stats["accuracy"] * 100)
 	correct_label.text = "Toplam Dogru: %d" % stats["correct"]
 	wrong_label.text = "Toplam Yanlis: %d" % stats["wrong"]
-	money_label.text = "Toplam Kasa: $%d" % stats["money"]
+	money_label.text = "Toplam Kasa: $%d" % EarningsSystem.get_total_earnings()
 	streak_label.text = "En iyi seri: %d" % stats["best_streak"]
 	combo_label.text = "En yuksek combo: x%d" % stats["max_combo"]
 	fake_detected_label.text = "Toplam sahte para: %d" % stats["fake_detected"]

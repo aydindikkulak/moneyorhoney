@@ -1,11 +1,12 @@
 extends Node
 
-enum GameState { MENU, PLAYING, DAY_END, GAME_OVER }
+enum GameState { MENU, PLAYING, DAY_END, WEEK_END, SHOP, GAME_OVER }
 
 var current_state: GameState = GameState.MENU
 
 var current_level: int = 1
 var current_day: int = 1
+var current_week: int = 1
 var total_score: int = 0
 var total_money_earned: int = 0
 var total_money_lost: int = 0
@@ -18,6 +19,10 @@ var day_money_lost: int = 0
 signal game_started
 signal day_started
 signal day_ended
+signal week_started
+signal week_ended
+signal shop_opened
+signal shop_closed
 signal decision_made(is_correct: bool)
 signal game_over
 
@@ -26,12 +31,17 @@ func _ready():
 
 func start_game():
 	current_level = 1
+	current_week = 1
 	current_day = 1
 	total_score = 0
 	total_money_earned = 0
 	total_money_lost = 0
+	
+	WeekCycleSystem.start_new_game()
+	EarningsSystem.start_new_game()
+	WarningSystem.start_new_game()
+	
 	game_started.emit()
-	# start_day() çağrısını kaldır - GameScene'den çağrılacak
 
 func start_day():
 	current_state = GameState.PLAYING
@@ -81,34 +91,39 @@ func check_level_completion() -> bool:
 	if level_data.is_empty():
 		return false
 	
-	var total_decisions = day_correct_decisions + day_wrong_decisions
-	var required_correct = level_data.get("required_correct", 0)
+	# Seviye tamamlanması için haftalık döngünün bitmesi gerekiyor
+	# (shop açılması = hafta sonu = seviye tamamlanma zamanı)
+	# Ayrıca doğruluk oranı da yeterli olmalı
+	var accuracy = get_accuracy()
+	var required_accuracy = level_data.get("required_accuracy", 0.75)
 	
-	return day_correct_decisions >= required_correct
+	return WeekCycleSystem.is_week_end() and accuracy >= required_accuracy
 
 func advance_to_next_day():
-	if check_level_completion():
-		current_day += 1
-		var level_data = LevelManager.get_level_data(current_level)
-		var days_in_level = level_data.get("days", 1)
-		
-		if current_day > days_in_level:
-			advance_to_next_level()
-		else:
-			start_day()
-	else:
-		print("Level not completed, retrying day...")
-		start_day()
+	# Haftalık döngü WeekCycleSystem tarafından yönetiliyor
+	# Bu fonksiyon sadece bir sonraki günü başlatır
+	start_day()
 
 func advance_to_next_level():
 	current_level += 1
+	current_week = 1
 	current_day = 1
 	
 	if current_level > LevelManager.get_total_levels():
 		game_over.emit()
 		current_state = GameState.GAME_OVER
 	else:
+		WeekCycleSystem.start_new_game()
 		start_day()
+
+func on_week_ended():
+	# Hafta sonu geldi - shop aç
+	current_state = GameState.SHOP
+	shop_opened.emit()
+
+func on_shop_closed():
+	# Shop kapandı - seviye atla
+	advance_to_next_level()
 
 func get_accuracy() -> float:
 	var total = day_correct_decisions + day_wrong_decisions

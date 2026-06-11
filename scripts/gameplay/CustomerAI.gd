@@ -52,7 +52,27 @@ var suspicious_responses: Dictionary = {
 }
 
 func _ready():
-	pass
+	GameManager.decision_made.connect(_on_decision_made)
+
+func _on_decision_made(is_correct: bool):
+	if not is_correct and current_customer.is_empty():
+		return
+	
+	if not is_correct:
+		var complaint_chance = 0.25
+		var level_data = LevelManager.get_level_data(GameManager.current_level)
+		var customer_type = current_customer.get("type", CustomerType.NORMAL)
+		
+		if customer_type == CustomerType.NORMAL:
+			complaint_chance = 0.30
+		elif customer_type == CustomerType.CARELESS:
+			complaint_chance = 0.15
+		
+		if randf() < complaint_chance:
+			WarningSystem.receive_complaint(
+				current_customer.get("name", "Bilinmeyen"),
+				"Yanlış işlem yapıldı"
+			)
 
 func generate_customer(level: int, customer_type: int = -1) -> Dictionary:
 	if customer_type == -1:
